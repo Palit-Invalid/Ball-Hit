@@ -69,8 +69,8 @@ def main():
 
     width_screen = 500
     height_screen = 500
-    num_balls = 100
-    fps = 30
+    num_balls = 10
+    fps = 60
 
     run = True
     while run:
