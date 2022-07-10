@@ -2,10 +2,17 @@ import pygame
 from pygame.draw import *
 from random import randint
 from math import sqrt
+import os
 
 from colors import *
 from ball import Ball
 from playerlist import PlayerList
+
+def clear_screen():
+    if(os.name == 'posix'):
+        os.system('clear')
+    else:
+        os.system('cls')
 
 def check_hit(event, balls: list):
     """Return true if player hit the ball"""
@@ -15,7 +22,6 @@ def check_hit(event, balls: list):
         distance = sqrt((x - ball.x)**2 + (y - ball.y)**2)
         if distance < ball.radius:
             del balls[index]
-
 
 def new_ball(surface, width, height):
     """Get a new ball with random parameters: cordinates, size, color"""
@@ -29,13 +35,16 @@ def move_balls(balls: list):
     for ball in balls:
         ball.move()
 
-
 def start_game(width=400, height=400, num_balls=3, fps=30) -> float:
+    
+    # Setup game
     pygame.init()
     screen = pygame.display.set_mode((width, height))
     screen.fill(WHITE)
     clock = pygame.time.Clock()
     balls = [new_ball(screen, width, height) for i in range(num_balls)]
+    
+    # Game cycle
     run = True
     while run:
         clock.tick(fps)
@@ -60,28 +69,27 @@ def main():
 
     width_screen = 500
     height_screen = 500
-    num_balls = 10
+    num_balls = 100
     fps = 30
 
     run = True
     while run:
+        clear_screen()
         answer = int(input("1. New game\n2. Settings game\n3. Table records\n4. Exit\n"))
         if answer == 1:
             playername = input("Enter your name: ")
             time = start_game(width_screen, height_screen, num_balls, fps)
             records.update_record(playername, time)
         elif answer == 2:
-            width_screen = int(input("Enter width screen -> "))
-            height_screen = int(input("Enter height screen -> "))
-            num_balls = int(input("Enter number of balls -> "))
-            fps = int(input("Enter FPS -> "))
-            pass
+            width_screen = int(input("Current width screen {0}\nEnter new value -> ".format(width_screen)))
+            height_screen = int(input("Current height screen {0}\nEnter new value -> ".format(height_screen)))
+            num_balls = int(input("Current number of balls {0}\nEnter new value -> ".format(num_balls)))
+            fps = int(input("Current FPS {0}\nEnter new value -> ".format(fps)))
         elif answer == 3:
-            pass
             records.print_all()
+            input()
         elif answer == 4:
             run = False
-            pass
 
 
 if __name__ == "__main__":
