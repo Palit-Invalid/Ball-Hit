@@ -61,8 +61,9 @@ def start_game(width=400, height=400, num_balls=3, fps=30) -> float:
         pygame.display.update()
     
     del balls
+    time = pygame.time.get_ticks()/1000
     pygame.quit()
-    return pygame.time.get_ticks()/1000
+    return time
     
 def main():
     records = PlayerList("records")
